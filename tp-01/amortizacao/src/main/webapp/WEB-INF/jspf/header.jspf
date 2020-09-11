@@ -1,0 +1,28 @@
+<%-- 
+    Document   : header
+    Created on : Sep 10, 2020, 11:48:47 PM
+    Author     : Cristiano
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-secondary">
+            <a class="navbar-brand" href="home.jsp">Home</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="amortizacao-constante.jsp">Amortização Constante</a>
+                    <a class="nav-link" href="amortizacao-americana.jsp">Amortização Americana</a>
+                    <a class="nav-link" href="tabela-price.jsp">Tabela Price</a>
+                </div>
+            </div>
+        </nav>
