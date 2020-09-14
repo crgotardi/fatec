@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-    <footer class="container-fluid text-light bg-dark p-3">
+    <footer class="container-fluid text-light bg-dark p-3 fixed-bottom">
         <div class="row">
             <div class="col-12 text-center">
                 <span><strong>Integrantes:</strong> Cristiano Renan Gotardi, 

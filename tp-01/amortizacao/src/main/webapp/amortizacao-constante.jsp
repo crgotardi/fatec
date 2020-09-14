@@ -9,14 +9,14 @@
 <%
     DecimalFormat currency = new DecimalFormat("R$#,##0.00");
     Exception requestException = null;
-    float valor = 0;
-    float meses = 0;
-    float taxa = 0;
-    float saldo = 0;
-    float juros = 0;
-    float parcelas = 0;
-    float totalJuros = 0;
-    float totalParcelas = 0;
+    float valor = 0,
+          meses = 0,
+          taxa = 0,
+          saldo = 0,
+          juros = 0,
+          parcelas = 0,
+          totalJuros = 0,
+          totalParcelas = 0;
     String periodo = null;
 
     try{
@@ -126,9 +126,9 @@
                     <% } %>
                         <tr>
                             <th scope="row">Total</th>
-                            <td><strong><%= currency.format(totalJuros) %></strong></td>
-                            <td><strong><%= currency.format(amortizacao * meses) %></strong></td>
                             <td><strong><%= currency.format(totalParcelas) %></strong></td>
+                            <td><strong><%= currency.format(amortizacao * meses) %></strong></td>
+                            <td><strong><%= currency.format(totalJuros) %></strong></td>
                             <td></td>
                         </tr>
                     </tbody>
