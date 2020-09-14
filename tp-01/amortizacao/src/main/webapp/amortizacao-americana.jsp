@@ -17,7 +17,7 @@
 <%
     try {
         meses = Integer.parseInt(request.getParameter("meses"));
-        juros = Double.parseDouble(request.getParameter("juros")) / 100;
+        juros = Double.parseDouble(request.getParameter("juros"));
         divida = Double.parseDouble(request.getParameter("emprestimo"));
         parcela = juros * divida;
         periodo = request.getParameter("periodo");
@@ -75,7 +75,7 @@
         <%  } else if (requestException != null) { %>
         <p>Parâmetros inválidos</p>
         <%  } else {
-            //juros = periodo.equals("m") ? juros/100 : (juros/100)/12;
+            juros = periodo.equals("m") ? juros/100 : (juros/100)/12;
         %>
         <div class="col-md-12">
             <table class="table table-striped">

@@ -8,8 +8,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     Exception requestException = null;
-    double juros = 0, divida = 0, parcela = 0, totalParcelas= 0, totalJuros=0, amortizacao=0, totalAmortizacao=0;
-    String periodo = null;
+    double juros = 0, divida = 0, parcela = 0, totalParcelas = 0, totalJuros = 0, amortizacao = 0, totalAmortizacao = 0;
+    
     int meses = 0;
     DecimalFormat formato = new DecimalFormat("#.##");
 %>
@@ -19,7 +19,6 @@
         juros = Double.parseDouble(request.getParameter("juros")) / 100;
         divida = Double.parseDouble(request.getParameter("emprestimo"));
         parcela = Double.parseDouble(request.getParameter("emprestimo")) * (Math.pow(1 + juros, meses) * juros) / (Math.pow(1 + juros, meses) - 1);
-        periodo = request.getParameter("periodo");
     } catch (Exception ex) {
         requestException = ex;
     }
@@ -49,13 +48,6 @@
                             <label>Taxa de juros</label>
                             <input type="number" step="0.01" maxFractionDigits="2" class="form-control" placeholder="0.0%" name="juros" value=<%=juros%> required>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label>Período</label>
-                            <select class="form-control" name="periodo">
-                                <option value="m">Ao mês</option>
-                                <option value="a">Ao ano</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="text-right">
                         <input class="btn btn-primary" type="submit" value="Calcular">
@@ -66,15 +58,13 @@
 
         <%            if (request.getParameter("emprestimo") == null
                     || request.getParameter("meses") == null
-                    || request.getParameter("juros") == null
-                    || request.getParameter("periodo") == null) 
-                {
+                    || request.getParameter("juros") == null) {
         %>
         <p>Informe os valores, o resultado aparecerá aqui</p>
         <%  } else if (requestException != null) { %>
         <p>Parâmetros inválidos</p>
         <%  } else {
-        //juros = periodo.equals("m") ? juros/100 : (juros/100)/12;
+           
         %>
         <div class="col-md-12">
             <table class="table table-striped">
@@ -101,18 +91,18 @@
                         <td><%= formato.format(valorJuros)%></td>
                         <td><%= formato.format(divida)%></td>
                     </tr>
-                    <% 
-                            totalJuros += valorJuros; 
-                            totalParcelas += parcela; 
-                            totalAmortizacao +=amortizacao;
+                    <%
+                        totalJuros += valorJuros;
+                        totalParcelas += parcela;
+                        totalAmortizacao += amortizacao;
                     %>
-                    <% } %>
+                    <% }%>
                     <tr>
                         <th scope="row">Total</th>
-                            <td><strong><%= formato.format(totalParcelas) %></strong></td>
-                            <td><strong><%= formato.format(totalAmortizacao) %></strong></td>
-                            <td><strong><%= formato.format(totalJuros) %></strong></td>
-                            <td></td>
+                        <td><strong><%= formato.format(totalParcelas)%></strong></td>
+                        <td><strong><%= formato.format(totalAmortizacao)%></strong></td>
+                        <td><strong><%= formato.format(totalJuros)%></strong></td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
