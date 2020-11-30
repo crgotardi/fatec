@@ -51,7 +51,7 @@ if(request.getParameter("formDelete") != null) {
     <% if(request.getParameter("prepareInsert") != null) { %>
     <div class="col-md-12 bg-light my-3 p-3">
         <h3>Cadastrar nova disciplina</h3>
-        <form method="POST">
+        <form method="GET">
             <div class="form-row">
                 <div class="col">
                     <label class="form-check-label">Nome</label>
@@ -78,7 +78,7 @@ if(request.getParameter("formDelete") != null) {
     <% } else if(request.getParameter("prepareDelete") != null) { %>
     <div class="col-md-12 bg-light my-3 p-3">
         <h3>Excluir disciplina</h3>
-        <form method="POST">
+        <form method="GET">
             <div class="form-row">
                 <input type="hidden" name="rowid" value="<%=request.getParameter("rowid")%>">
                 Você deseja realmente excluir o curso com id <%=request.getParameter("rowid")%> ?
@@ -117,7 +117,7 @@ if(request.getParameter("formDelete") != null) {
                           <td scope="row"><%= d.getEmenta()%></td>
                           <td scope="row"><%= d.getNota()%></td>
                           <td scope="row">
-                              <form method="POST">
+                              <form method="GET">
                                   <input type="hidden" name="rowid" value="<%= d.getRowId()%>">
                                   <input type="submit" name="prepareDelete" value="Deletar" class="btn btn-danger">
                               </form>

@@ -68,6 +68,7 @@ public class Disciplina {
             stmt.setString(2, ementa);
             stmt.setInt(3, ciclo);
             stmt.setFloat(4, nota);
+            stmt.execute();
         } catch(Exception ex) {
             throw ex;
         } finally{
@@ -85,6 +86,7 @@ public class Disciplina {
             con = DbListener.getConnection();
             stmt = con.prepareStatement("DELETE FROM disciplinas WHERE rowid=?");
             stmt.setLong(1, rowid);
+            stmt.execute();
         } catch(Exception ex) {
             throw ex;
         } finally{
