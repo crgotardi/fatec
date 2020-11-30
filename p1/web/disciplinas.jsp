@@ -4,7 +4,7 @@
     Author     : Cristiano
 --%>
 
-<%@page import="com.mycompany.avaliacao.Disciplina"%>
+<%@page import="model.Disciplina"%>
 <%@page import="java.util.ArrayList"%>
 <%@include file="./WEB-INF/jspf/header.jspf"%>
 <%
