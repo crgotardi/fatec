@@ -8,34 +8,27 @@
 <%@page import="java.util.ArrayList"%>
 <%@include file="./WEB-INF/jspf/header.jspf"%>
 <%
-  ArrayList<Disciplina> disciplinas = new ArrayList<>();
-  disciplinas = Disciplina.getList();
-  boolean editar = false;
-    ArrayList<String> mensagensErro = new ArrayList<>();
-  
-  if (disciplinas.isEmpty()) {
-      disciplinas.add(new Disciplina("Programação orientada a objetos", "Conceitos e evolução da tecnologia de orientação a objetos.", 4));
-      disciplinas.add(new Disciplina("Banco de dados", "Conceitos de Base de Dados. Modelos conceituais de informações. Modelos de Dados..", 4));
-      disciplinas.add(new Disciplina("Segurança da informação", "Requisitos de segurança de aplicações, de base de dados e de comunicações.", 4));
-      disciplinas.add(new Disciplina("Engenharia de software III", "Conceitos, evolução e importância de arquitetura de software. Padrões de Arquitetura.", 4));
-      disciplinas.add(new Disciplina("Sistemas operacionais II", "Apresentação de um sistema operacional específico utilizado em ambiente corporativo.", 4));
-      disciplinas.add(new Disciplina("Metodologia de pesquisa Científico-tecnologica", "O Papel da ciência e da tecnologia. Tipos de conhecimento. Método e técnica.", 4));
-      disciplinas.add(new Disciplina("Linguagem de programação IV", "Comandos de linguagens usadas na construção e estruturação de sites para a Web.", 4));
+  String exceptionMessage = null;
+  if(request.getParameter("formInsert") != null) {
+      try{
+          String nome = request.getParameter("nome");
+          String ementa = request.getParameter("ementa");
+          int ciclo = Integer.parseInt(request.getParameter("ciclo"));
+          float nota = Float.parseFloat(request.getParameter("nota"));
+          Disciplina.insert(nome, ementa, ciclo, nota);
+          response.sendRedirect(request.getRequestURI());
+      } catch(Exception ex) {
+          exceptionMessage = ex.getLocalizedMessage();
+      }
   }
   
-  if(request.getParameter("editar") != null) {
-      editar = true;
-  }
-  
-  if (request.getParameter("salvar") != null) {
-      String[] notas = request.getParameterValues("nota");
-      for (int i=0; i<notas.length; i++) {
-          try {
-              float nota = Float.parseFloat(notas[i]);
-              disciplinas.get(i).setNota(nota);
-          } catch(NumberFormatException e) {
-              mensagensErro.add("A disciplina " + disciplinas.get(i).getNome() + " Tem o valor  da nota invalido, tente novamente");
-          }
+if(request.getParameter("formDelete") != null) {
+      try{
+          long rowid = Long.parseLong(request.getParameter("rowid"));
+          Disciplina.delete(rowid);
+          response.sendRedirect(request.getRequestURI());
+      } catch(Exception ex) {
+          exceptionMessage = ex.getLocalizedMessage();
       }
   }
 %>
@@ -47,15 +40,59 @@
             <h2>Disciplinas</h2>
         </div>
     </div>
-    <% if (mensagensErro.size() > 0) { %>
-        <% for (String mensagem : mensagensErro) { %>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <span><%= mensagem %></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+    <% if (exceptionMessage != null) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span><%= exceptionMessage %></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <% } %>
+    <% if(request.getParameter("prepareInsert") != null) { %>
+    <div class="col-md-12 bg-light my-3 p-3">
+        <h3>Cadastrar nova disciplina</h3>
+        <form method="POST">
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-check-label">Nome</label>
+                    <input type="text" name="nome" class="form-control">
+                </div>
+                <div class="col">
+                    <label class="form-check-label">Ementa</label>
+                    <input type="text" name="ementa" class="form-control">
+                </div>
             </div>
-        <% } %>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-check-label">Ciclo</label>
+                    <input type="number" step="1" min="1" max="6" name="ciclo" class="form-control">
+                </div>
+                <div class="col">
+                    <label class="form-check-label">Nota</label>
+                    <input type="number" step="0.05" min="0" max="10" name="nota" class="form-control">
+                </div>
+            </div>
+            <input type="submit" value="Salvar" name="formInsert" class="btn btn-primary">
+        </form>
+    </div>
+    <% } else if(request.getParameter("prepareDelete") != null) { %>
+    <div class="col-md-12 bg-light my-3 p-3">
+        <h3>Excluir disciplina</h3>
+        <form method="POST">
+            <div class="form-row">
+                <input type="hidden" name="rowid" value="<%=request.getParameter("rowid")%>">
+                Você deseja realmente excluir o curso com id <%=request.getParameter("rowid")%> ?
+                <div class="col">
+                    <input type="submit" name="formDelete" value="Excluir" class="btn btn-danger">
+                    <input type="submit" name="Cancelar" value="Cancelar" class="btn btn-secondary">
+                </div>
+            </div>
+        </form>
+    </div>
+    <% } else { %>
+        <form method="GET">
+            <input type="submit" value="Cadastrar disciplina" name="prepareInsert" class="btn btn-primary my-2 mx-3">
+        </form>
     <% } %>
     <div class="row">
         <div class="col-12">
@@ -64,34 +101,31 @@
                     <thead>
                       <tr>
                         <th scope="col">Código</th>
+                        <th scope="col">Ciclo</th>
                         <th scope="col">Nome</th>
                         <th scope="col">Ementa</th>
                         <th scope="col">Nota</th>
+                        <th scope="col">#</th>
                       </tr>
                     </thead>
                     <tbody>
-                    <% for(int i=0; i<disciplinas.size(); i++) { %>
+                    <% for(Disciplina d: Disciplina.getList()) { %>
                         <tr>
-                          <td scope="row"><%= i+1 %></td>
-                          <td scope="row"><%= disciplinas.get(i).getNome() %></td>
-                          <td scope="row"><%= disciplinas.get(i).getEmenta() %></td>
+                          <td scope="row"><%= d.getRowId()%></td>
+                          <td scope="row"><%= d.getCiclo()%></td>
+                          <td scope="row"><%= d.getNome()%></td>
+                          <td scope="row"><%= d.getEmenta()%></td>
+                          <td scope="row"><%= d.getNota()%></td>
                           <td scope="row">
-                              <% if(editar) { %>
-                                <input type="number" name="nota" value=<%=disciplinas.get(i).getNota()%> 
-                                       max=10 min="0" maxFractionDigits="2" step="0.5">
-                              <% } else { %>
-                                <%= disciplinas.get(i).getNota() %>
-                              <% } %>
+                              <form method="POST">
+                                  <input type="hidden" name="rowid" value="<%= d.getRowId()%>">
+                                  <input type="submit" name="prepareDelete" value="Deletar" class="btn btn-danger">
+                              </form>
                           </td>
                         </tr>
                     <% } %>
                     </tbody>
                 </table>
-                <% if(!editar) { %>
-                    <input type="submit" class="btn btn-secondary" name="editar" value="Editar notas">
-                <% } else { %>
-                    <input type="submit" class="btn btn-success" name="salvar" value="Salvar alterações">
-                <% } %>
             </form>
         </div>
     </div>
